@@ -4,7 +4,7 @@ import userService from '../services/user.service';
 const loginUser = async (req: Request, res: Response):Promise<void> => {
   const { email, password } = req.body;
   const { status, message } = await userService.loginUser(email, password);
-  
+
   if (status === 200) {
     res.status(status).json({ token: message });
   } else {
