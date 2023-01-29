@@ -1,5 +1,6 @@
 import * as express from 'express';
 import loginRoute from './routes/login.route';
+import teamsRoute from './routes/teams.route';
 
 class App {
   public app: express.Express;
@@ -13,7 +14,7 @@ class App {
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
 
-  private config():void {
+  private config(): void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
@@ -23,11 +24,13 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use('/teams', teamsRoute);
+    this.app.use('/teams/:id', teamsRoute);
     this.app.use('/login', loginRoute);
     this.app.use('/login/validate', loginRoute);
   }
 
-  public start(PORT: string | number):void {
+  public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
   }
 }
