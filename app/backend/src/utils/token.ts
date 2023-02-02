@@ -17,7 +17,6 @@ const tokenVerify = (token: string): IToken => {
     const userDecoded = jwt.verify(token, secret);
     return userDecoded as IToken;
   } catch (error) {
-    console.log(error);
     return { email: 'Invalid Token' };
   }
 };
