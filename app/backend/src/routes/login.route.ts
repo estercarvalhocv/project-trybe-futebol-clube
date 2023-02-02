@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import loginValidate from '../middlewares/loginValidate';
-import authToken from '../middlewares/authToken';
 import userControllers from '../controllers/user.controllers';
+import authToken from '../middlewares/authToken';
 
 const routers = Router();
 

@@ -25,11 +25,13 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-    this.app.use('/matches', matchesRoute);
-    this.app.use('/teams', teamsRoute);
-    this.app.use('/teams/:id', teamsRoute);
     this.app.use('/login', loginRoute);
     this.app.use('/login/validate', loginRoute);
+    this.app.use('/teams', teamsRoute);
+    this.app.use('/teams/:id', teamsRoute);
+    this.app.use('/matches', matchesRoute);
+    this.app.use('/matches/:id/finish', matchesRoute);
+    this.app.use('/matches/:id', matchesRoute);
   }
 
   public start(PORT: string | number): void {

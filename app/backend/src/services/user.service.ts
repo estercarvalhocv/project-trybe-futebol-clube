@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcryptjs';
 import IRes from '../interfaces/IRes';
 import usersModel from '../database/models/usersModel';
-import generateToken from '../utils/token';
+import tokenUtil from '../utils/token';
 
 const loginUser = async (email: string, password: string): Promise<IRes> => {
   // Procura o usuario por email.
@@ -17,7 +17,7 @@ const loginUser = async (email: string, password: string): Promise<IRes> => {
   }
 
   // Gera o token para o usuário
-  const userToken = generateToken(user.dataValues);
+  const userToken = tokenUtil.generateToken(user.dataValues);
   return { status: 200, message: userToken };
 };
 
