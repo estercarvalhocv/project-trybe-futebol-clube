@@ -7,7 +7,7 @@ const allTeams = async (_req: Request, res: Response) => {
   if (status === 200) {
     res.status(status).json(message);
   } else {
-    res.status(400).json('Could not found the teams.');
+    res.status(400).json('Couldn't found the teams.');
   }
 };
 
