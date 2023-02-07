@@ -40,7 +40,6 @@ const createMatch = async (req: Request, res: Response) => {
   return res.status(type).json(response);
 };
 
-
 export default {
   allMatches,
   createMatch,
