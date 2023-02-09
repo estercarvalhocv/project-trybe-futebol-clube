@@ -3,6 +3,9 @@ import matchesService from '../services/matches.service';
 import tokenUtil from '../utils/token';
 import IMatch from '../interfaces/IMatch';
 
+const INVALID_TOKEN = 'Invalid Token';
+const INVALID_TOKEN_MESSAGE = 'Token must be a valid token';
+
 const allMatches = async (req: Request, res: Response) => {
   const { inProgress } = req.query;
 
@@ -22,8 +25,8 @@ const createMatch = async (req: Request, res: Response) => {
   const token = req.headers.authorization;
   const { email } = tokenUtil.tokenVerify(token as string);
 
-  if (email === 'Invalid Token') {
-    return res.status(401).json({ message: 'Token must be a valid token' });
+  if (email === INVALID_TOKEN) {
+    return res.status(401).json({ message: INVALID_TOKEN_MESSAGE });
   }
 
   if (match.homeTeamId === match.awayTeamId) {
@@ -45,11 +48,26 @@ const finishMatch = async (req: Request, res: Response) => {
   const token = req.headers.authorization;
   const { email } = tokenUtil.tokenVerify(token as string);
 
-  if (email === 'Invalid Token') {
-    return res.status(401).json({ message: 'Token must be a valid token' });
+  if (email === INVALID_TOKEN) {
+    return res.status(401).json({ message: INVALID_TOKEN_MESSAGE });
   }
 
   const { type, message } = await matchesService.finishMatch(id);
+
+  return res.status(type).json({ message });
+};
+
+const updateMatch = async (req: Request, res: Response) => {
+  const { homeTeamGoals, awayTeamGoals } = req.body;
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { email } = tokenUtil.tokenVerify(token as string);
+
+  if (email === INVALID_TOKEN) {
+    return res.status(401).json({ message: INVALID_TOKEN_MESSAGE });
+  }
+
+  const { type, message } = await matchesService.updateMatch(id, homeTeamGoals, awayTeamGoals);
 
   return res.status(type).json({ message });
 };
@@ -58,4 +76,5 @@ export default {
   allMatches,
   createMatch,
   finishMatch,
+  updateMatch,
 };

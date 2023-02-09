@@ -45,8 +45,14 @@ const finishMatch = async (id: string) => {
   return { type: 200, message: 'Finished' };
 };
 
+const updateMatch = async (id: string, homeTeamGoals: string, awayTeamGoals: string) => {
+  await matchesModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+  return { type: 200, message: 'Updated' };
+};
+
 export default {
   allMatches,
   createMatch,
   finishMatch,
+  updateMatch,
 };
