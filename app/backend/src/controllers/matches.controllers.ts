@@ -28,19 +28,34 @@ const createMatch = async (req: Request, res: Response) => {
 
   if (match.homeTeamId === match.awayTeamId) {
     return res.status(422)
-      .json({ message: 'It\'s not possible to create a match with two equal teams' });
+      .json({ message: 'It is not possible to create a match with two equal teams' });
   }
 
-  const { type, response } = await matchesService.createMatch(match);
+  const { type, message } = await matchesService.createMatch(match);
 
   if (type !== 201) {
-    return res.status(type).json({ message: response });
+    return res.status(type).json({ message });
   }
 
-  return res.status(type).json(response);
+  return res.status(type).json(message);
+};
+
+const finishMatch = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { email } = tokenUtil.tokenVerify(token as string);
+
+  if (email === 'Invalid Token') {
+    return res.status(401).json({ message: 'Token must be a valid token' });
+  }
+
+  const { type, message } = await matchesService.finishMatch(id);
+
+  return res.status(type).json({ message });
 };
 
 export default {
   allMatches,
   createMatch,
+  finishMatch,
 };

@@ -28,19 +28,25 @@ const createMatch = async (match: IMatch) => {
   const awayTeam = await teamModel.findByPk(match.awayTeamId);
 
   if (!homeTeam || !awayTeam) {
-    return { type: 404, response: 'There is no team with such id!' };
+    return { type: 404, message: 'There is no team with such id!' };
   }
 
   const newMatch = await matchesModel.create({ ...match, inProgress: true });
 
   if (!newMatch) {
-    return { type: 500, response: 'Something went wrong' };
+    return { type: 500, message: 'Something went wrong' };
   }
 
-  return { type: 201, response: newMatch };
+  return { type: 201, message: newMatch };
+};
+
+const finishMatch = async (id: string) => {
+  await matchesModel.update({ inProgress: false }, { where: { id } });
+  return { type: 200, message: 'Finished' };
 };
 
 export default {
   allMatches,
   createMatch,
+  finishMatch,
 };

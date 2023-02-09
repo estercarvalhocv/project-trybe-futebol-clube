@@ -30,6 +30,7 @@ class App {
     this.app.use('/teams', teamsRoute);
     this.app.use('/teams/:id', teamsRoute);
     this.app.use('/matches', matchesRoute);
+    this.app.use('/matches/:id/finish', matchesRoute);
   }
 
   public start(PORT: string | number): void {
