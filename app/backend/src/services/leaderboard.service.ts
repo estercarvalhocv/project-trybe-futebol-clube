@@ -2,14 +2,13 @@ import teamModel from '../database/models/teamsModel';
 import matchesModel from '../database/models/matchModel';
 import ILeaderboard from '../interfaces/ILeaderboard';
 import IMatch from '../interfaces/IMatch';
-import e = require('express');
 
 const createBoard = async (): Promise<ILeaderboard[]> => {
   const teams = await teamModel.findAll();
 
-  const board: ILeaderboard[] = teams.map((e) => ({
-    id: e.id,
-    name: e.teamName,
+  const board: ILeaderboard[] = teams.map((value) => ({
+    id: value.id,
+    name: value.teamName,
     totalPoints: 0,
     totalGames: 0,
     totalVictories: 0,
@@ -69,7 +68,7 @@ const createResultsAway = async (): Promise<ILeaderboard[]> => {
   return board;
 };
 
-const sumBoard = async (): Promise<ILeaderboard[]> => {
+const createResultBoard = async (): Promise<ILeaderboard[]> => {
   const home = await createResultsHome();
   const away = await createResultsAway();
   const board = home.map((data) => {
@@ -92,5 +91,5 @@ const sumBoard = async (): Promise<ILeaderboard[]> => {
 
 export default {
   createResultsHome,
-  sumBoard,
+  createResultBoard,
 };
