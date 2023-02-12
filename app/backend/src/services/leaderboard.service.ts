@@ -30,7 +30,7 @@ const calculate = (team: ILeaderboard): number => {
 
 const createResultsHome = async (): Promise<ILeaderboard[]> => {
   const board = await createBoard();
-  const matchs: IMatch[] = await matchesModel.findAll();
+  const matchs: IMatch[] = await matchesModel.findAll({ where: { inProgress: false } });
   matchs.forEach((data) => {
     const team = board.find((e) => data.homeTeamId === e.id) as ILeaderboard;
     if (data.homeTeamGoals > data.awayTeamGoals) {
@@ -50,13 +50,13 @@ const createResultsHome = async (): Promise<ILeaderboard[]> => {
 
 const createResultsAway = async (): Promise<ILeaderboard[]> => {
   const board = await createBoard();
-  const matchs: IMatch[] = await matchesModel.findAll();
+  const matchs: IMatch[] = await matchesModel.findAll({ where: { inProgress: false } });
   matchs.forEach((data) => {
     const team = board.find((e) => data.awayTeamId === e.id) as ILeaderboard;
-    if (data.awayTeamId > data.homeTeamId) {
+    if (data.awayTeamGoals > data.homeTeamGoals) {
       team.totalPoints += 3;
       team.totalVictories += 1;
-    } else if (data.awayTeamId < data.homeTeamId) {
+    } else if (data.awayTeamGoals < data.homeTeamGoals) {
       team.totalLosses += 1;
     } else { team.totalPoints += 1; team.totalDraws += 1; }
     team.totalGames += 1;
@@ -91,5 +91,6 @@ const createResultBoard = async (): Promise<ILeaderboard[]> => {
 
 export default {
   createResultsHome,
+  createResultsAway,
   createResultBoard,
 };

@@ -8,14 +8,20 @@ const createResultBoard = async (_req: Request, res: Response) => {
 
 const createResultHome = async (_req: Request, res: Response) => {
   const message = await leaderboardService.createResultsHome();
-  message.sort((a, b) => b.totalPoints - a.totalPoints
-    || b.goalsBalance - a.goalsBalance
-    || b.goalsFavor - a.goalsFavor
-    || b.goalsOwn - a.goalsOwn);
+  message.sort((a, b) => b.totalPoints - a.totalPoints || b.goalsBalance - a.goalsBalance
+    || b.goalsFavor - a.goalsFavor || b.goalsOwn - a.goalsOwn);
+  return res.status(200).json(message);
+};
+
+const createResultsAway = async (_req: Request, res: Response) => {
+  const message = await leaderboardService.createResultsAway();
+  message.sort((a, b) => b.totalPoints - a.totalPoints || b.goalsBalance - a.goalsBalance
+    || b.goalsFavor - a.goalsFavor || b.goalsOwn - a.goalsOwn);
   return res.status(200).json(message);
 };
 
 export default {
   createResultBoard,
   createResultHome,
+  createResultsAway,
 };

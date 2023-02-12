@@ -35,6 +35,7 @@ class App {
     this.app.use('/matches/:id', matchesRoute);
     this.app.use('/leaderboard', leaderboardRouter);
     this.app.use('/leaderboard/home', leaderboardRouter);
+    this.app.use('/leaderboard/away', leaderboardRouter);
   }
 
   public start(PORT: string | number): void {
